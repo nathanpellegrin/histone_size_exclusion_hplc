@@ -1,3 +1,12 @@
+---
+title: "HPLC Size Exclusion on Histones"
+output: html_document
+date: "2023-12-05"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
 setwd("~/Documents/BTECH 609 Histone Size Exclusion Lab")
 
 library(dplyr)
@@ -52,7 +61,9 @@ get_gl <- function(name, case = "lower") {
     return(NA) # Return NA if no match is found
   }
 }
+```
 
+```{r}
 
 ggplot(data_long, aes(x = Time, y = value, color = Wavelength)) +
   geom_line() + # Add line plot
@@ -65,11 +76,14 @@ ggplot(data_long, aes(x = Time, y = value, color = Wavelength)) +
        y = "Value",
        color = "Wavelength") +
   theme(legend.position = "bottom") # Adjust legend position
+```
+
+
 
 #  https://stackoverflow.com/questions/66053185/dual-y-axis-while-using-facet-wrap-in-ggplot-with-varying-y-axis-scale
 
 
-
+```{r}
 data_wv <- data_long %>%
   mutate(Wavelength = gsub("Å", "A", Wavelength)) %>%
   spread(key = Wavelength, value = value) 
@@ -106,7 +120,9 @@ ggplot(data_wv, aes(x = Time)) +
        x = "Time",
        y = "Wavelength") +
   theme(legend.position = "bottom") # Adjust legend position
+```
 
+```{r}
 
 # get max intensities for each sample
 max_wl <- data_long %>%
@@ -144,8 +160,11 @@ ggplot(data_wv2, aes(x = Time)) +
   labs(title = "Intensity of Absorption over Time by Sample and Wavelength",
        x = "Time (minutes)",
        y = "Absorption Intensity") 
+```
 
 
+
+```{r}
 
 # this function regenerates ggplot2 default colors
 gg_color_hue <- function(n) {
@@ -170,7 +189,11 @@ theme_minimal() +
        y = "Intesity",
        color = "Sample: ") +
   theme(legend.position = "right") # Adjust legend position
+```
 
+
+
+```{r}
 
 sec_std <- data.frame(
 molecule=c('Thyroglobulin',paste0(get_gl("gamma"),'-Globulin'),'Albumin','Riboncls-A',paste0(get_gl("rho"),'-ABA')),
@@ -190,3 +213,4 @@ ggplot(sec_std, aes(x=elution_time, y=log(weight))) +
      x = "Elution time (minutes)",
      y = "log(g/l)",
      color = "Molecule: ")
+```
